@@ -373,15 +373,15 @@ class PCAL9535A:
             -------
             int
                 0: Disabled
-                1: Pull-down
-                2: Pull-up
+                -1: Pull-down
+                1: Pull-up
             """
             if self._pcal._get_pullup_enable(self._port, self._pin):
                 return 0
             elif self._pcal._get_pullup_sel(self._port, self._pin):
-                return 2
-            else:
                 return 1
+            else:
+                return -1
 
         @pullup.setter
         def pullup(self, selector):
@@ -391,13 +391,13 @@ class PCAL9535A:
             ----------
             selector: int
                 0: Disconnect the pull-up/pull-down resistors from the I/O pin
-                1: Select a 100 kOhm pull-down resistor for that I/O pin
-                2: Select a 100 kOhm pull-up resistor for that I/O pin
+                -1: Select a 100 kOhm pull-down resistor for that I/O pin
+                1: Select a 100 kOhm pull-up resistor for that I/O pin
                 Power-up default: 0
             """
             self._pcal._set_pullup_enable(self._port, self._pin, selector != 0)
-            if selector > 0:
-                self._pcal._set_pullup_sel(self._port, self._pin, selector - 1 != 0)
+            if selector != 0:
+                self._pcal._set_pullup_sel(self._port, self._pin, selector > 0)
 
         @property
         def drive_strength(self):
