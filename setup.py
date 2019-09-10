@@ -8,7 +8,7 @@ setup(
   author = 'Denis Shulyaka',
   author_email = 'Shulyaka@gmail.com',
   url = 'https://github.com/Shulyaka/pcal9535a',
-  download_url = 'https://github.com/Shulyaka/pcal9535a/archive/v_01.tar.gz',
+  download_url = 'https://github.com/Shulyaka/pcal9535a/archive/v0.1.tar.gz',
   keywords = ['PCAL9535A', 'I2C', 'GPIO', 'DIY'],
   install_requires=[
           'smbus-cffi',
