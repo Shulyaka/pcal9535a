@@ -379,7 +379,7 @@ class PCAL9535A:
             """
             if self._pcal._get_pullup_enable(self._port, self._pin):
                 return 0
-            else if self._pcal._get_pullup_sel(self._port, self._pin):
+            elif self._pcal._get_pullup_sel(self._port, self._pin):
                 return 2
             else:
                 return 1
