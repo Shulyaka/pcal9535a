@@ -71,7 +71,7 @@ class PCAL9535A:
                     3: self._bus.read_byte_data(self._i2c_address, 0x43),
                     }
 
-    def get_output_configuration(self, port)
+    def get_output_configuration(self, port):
         """Get open-drain/push-pull port configuration
         
         Parameters
@@ -120,11 +120,11 @@ class PCAL9535A:
         self._bus.write_byte_data(self._i2c_address, 0x4f,
                 PCAL9535A._output_conf_reg[self._dev])
 
-    def _get_direction(self, port, pin)
+    def _get_direction(self, port, pin):
         """Returns whether the pin is input or output"""
         PCAL9535A._config_reg[self._dev][port] = self._bus.read_byte_data(self._i2c_address, 0x06 + port)
 
-        return (PCAL9535A._config_reg[self._dev][port] & ((0x01) << pin)) != 0
+        return PCAL9535A._config_reg[self._dev][port] & ((0x01) << pin) != 0
 
     def _set_direction(self, port, pin, is_input):
         """Set pin to be input or output."""
@@ -148,7 +148,7 @@ class PCAL9535A:
         """Get the polarity inversion settings."""
         PCAL9535A._polarity_reg[self._dev][port] = self._bus.read_byte_data(self._i2c_address, 0x04 + port)
 
-        return PCAL9535A._polarity_reg[self._dev][port] & ((0x01) << pin)) != 0
+        return PCAL9535A._polarity_reg[self._dev][port] & ((0x01) << pin) != 0
 
     def _set_inverted(self, port, pin, is_inverted):
         """Inverse the polarity of an input pin."""
@@ -163,11 +163,11 @@ class PCAL9535A:
         self._bus.write_byte_data(self._i2c_address, 0x04 + port,
                 PCAL9535A._polarity_reg[self._dev][port])
 
-    def _get_pullup_enable(self, port, pin)
+    def _get_pullup_enable(self, port, pin):
         """Check whether pullup/pulldown resistors enabled for a pin."""
         PCAL9535A._pullup_enable_reg[self._dev][port] = self._bus.read_byte_data(self._i2c_address, 0x46 + port)
 
-        return PCAL9535A._pullup_enable_reg[self._dev][port] & ((0x01) << pin)) != 0
+        return PCAL9535A._pullup_enable_reg[self._dev][port] & ((0x01) << pin) != 0
 
     def _set_pullup_enable(self, port, pin, is_enabled):
         """Enable or disable pullup/pulldown resistors for a pin."""
@@ -182,11 +182,11 @@ class PCAL9535A:
         self._bus.write_byte_data(self._i2c_address, 0x46 + port,
                 PCAL9535A._pullup_enable_reg[self._dev][port])
 
-    def _get_pullup_sel(self, port, pin)
+    def _get_pullup_sel(self, port, pin):
         """Get pullup/pulldown resistors for a pin."""
         PCAL9535A._pullup_sel_reg[self._dev][port] = self._bus.read_byte_data(self._i2c_address, 0x48 + port)
 
-        return PCAL9535A._pullup_sel_reg[self._dev][port] & ((0x01) << pin)) != 0
+        return PCAL9535A._pullup_sel_reg[self._dev][port] & ((0x01) << pin) != 0
 
     def _set_pullup_sel(self, port, pin, is_up):
         """Configure pullup/pulldown resistors for a pin."""
@@ -201,7 +201,7 @@ class PCAL9535A:
         self._bus.write_byte_data(self._i2c_address, 0x48 + port,
                 PCAL9535A._pullup_sel_reg[self._dev][port])
 
-    def _get_drive_strength(self, port, pin)
+    def _get_drive_strength(self, port, pin):
         """Get output drive strength for a pin."""
         PCAL9535A._drive_strength_reg[self._dev][port*2 + pin//4] = self._bus.read_byte_data(self._i2c_address, 0x40 + port*2 + pin//4)
 
@@ -237,7 +237,7 @@ class PCAL9535A:
     def _get_level(self, port, pin):
         """Return the state of the pin"""
         # TODO: Test if output pins are read correctly, including inverse logic
-        return (self._bus.read_byte_data(self._i2c_address, 0x00 + port) & ((0x01) << pin))
+        return self._bus.read_byte_data(self._i2c_address, 0x00 + port) & ((0x01) << pin) != 0
 
     class _pin:
         """Convenience proxy class representing one pin
@@ -273,7 +273,6 @@ class PCAL9535A:
             3: 1x of the maximum drive capability of the I/O
             Power-up default: 3
         """
-        Get an object representing the pin
 
         def __init__(self, pcal, port, pin):
             """Initialize the class.
@@ -292,7 +291,7 @@ class PCAL9535A:
             self._pin = pin
 
         @property
-        def input(self)
+        def input(self):
             """Read the direction of the pin
 
             Returns

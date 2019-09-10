@@ -2,13 +2,13 @@ from distutils.core import setup
 setup(
   name = 'pcal9535a',
   packages = ['pcal9535a'],
-  version = '0.1',
+  version = '0.3',
   license='MIT',
   description = 'A library to control NXP PCAL9535A GPIO expander',
   author = 'Denis Shulyaka',
   author_email = 'Shulyaka@gmail.com',
   url = 'https://github.com/Shulyaka/pcal9535a',
-  download_url = 'https://github.com/Shulyaka/pcal9535a/archive/v0.1.tar.gz',
+  download_url = 'https://github.com/Shulyaka/pcal9535a/archive/v0.3.tar.gz',
   keywords = ['PCAL9535A', 'I2C', 'GPIO', 'DIY'],
   install_requires=[
           'smbus-cffi',
