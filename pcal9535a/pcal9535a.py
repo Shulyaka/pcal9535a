@@ -34,7 +34,7 @@ class PCAL9535A:
         i2c_address: int
             I2C device address (default is 0x20). Three hardware pins (A0, A1, A2) select the fixed I2C-bus address and allow up to eight devices to share the same I2C-bus/SMBus. See Section 6.1 of the Datasheet
         caching: bool
-            Allows caching of register values to speed up updates. Disable, if you want separate applications to control same device (default is True)
+            Allows caching of register values to speed up write operations. Disable, if you want separate applications to control same device (default is True)
         """
         from smbus import SMBus
 
@@ -225,8 +225,10 @@ class PCAL9535A:
         """Set the outgoing logic level of the pin."""
         if not self._caching:
             PCAL9535A._output_reg[self._dev][port] = self._bus.read_byte_data(self._i2c_address, 0x02 + port)
+            PCAL9535A._polarity_reg[self._dev][port] = self._bus.read_byte_data(self._i2c_address, 0x04 + port)
 
-        if is_high:
+        # The chip does not implement inverse logic for output registers, so we emulate it here
+        if is_high ^ (PCAL9535A._polarity_reg[self._dev][port] & ((0x01) << pin) != 0):
             PCAL9535A._output_reg[self._dev][port] |= ((0x01) << pin)
         else:
             PCAL9535A._output_reg[self._dev][port] &= ~((0x01) << pin)
@@ -236,7 +238,6 @@ class PCAL9535A:
 
     def _get_level(self, port, pin):
         """Return the state of the pin"""
-        # TODO: Test if output pins are read correctly, including inverse logic
         return self._bus.read_byte_data(self._i2c_address, 0x00 + port) & ((0x01) << pin) != 0
 
     class _pin:
