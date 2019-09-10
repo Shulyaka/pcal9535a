@@ -139,7 +139,7 @@ class PCAL9535A:
         else:
             if PCAL9535A._config_reg[self._dev][port] & ((0x01) << pin):
                 #Pin was previously configured as input, switch it off before configuring as output
-                self.set_level(port, pin, False)
+                self._set_level(port, pin, False)
                 PCAL9535A._config_reg[self._dev][port] &= ~((0x01) << pin)
                 self._bus.write_byte_data(self._i2c_address, 0x06 + port,
                         PCAL9535A._config_reg[self._dev][port])
