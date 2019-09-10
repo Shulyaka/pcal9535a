@@ -447,4 +447,4 @@ class PCAL9535A:
             raise Exception("Invalid port number")
         if pin < 0 or pin > 7:
             raise Exception("Invalid pin number")
-        return _pin(self, port, pin)
+        return PCAL9535A._pin(self, port, pin)
